@@ -1,7 +1,11 @@
 const BASE = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
 const IMG_BASE = import.meta.env.VITE_API_URL || '';
 
-export const imageUrl = (path) => path ? `${IMG_BASE}${path}` : null;
+export const imageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith('http')) return path; // full Supabase Storage URL
+  return `${IMG_BASE}${path}`; // legacy local path
+};
 
 // Simple in-memory cache (60s TTL)
 const cache = new Map();
