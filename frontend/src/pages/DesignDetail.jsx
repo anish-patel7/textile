@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../App';
-import { getDesign, deleteDesign } from '../lib/api';
+import { getDesign, deleteDesign, imageUrl } from '../lib/api';
 
 const COLOR_MAP = { Ground: '#8B7355', Black: '#1a1a1a', White: '#f5f0e8', Red: '#c0392b', Blue: '#2980b9', Green: '#27ae60', Yellow: '#f1c40f', Orange: '#e67e22', Purple: '#8e44ad', Grey: '#95a5a6', Brown: '#6d4c41', Pink: '#e91e63' };
 function colorHex(name) { if (!name) return '#ccc'; for (const [k, v] of Object.entries(COLOR_MAP)) { if (name.toLowerCase().includes(k.toLowerCase())) return v; } return '#0e7c6b'; }
@@ -47,7 +47,7 @@ export default function DesignDetail() {
     ['Work', design.work], ['Blue + APT', design.blue_apt],
   ].filter(([, v]) => v);
 
-  const imageUrl = design.image_path ? `http://localhost:5000${design.image_path}` : null;
+  const img = imageUrl(design.image_path);
 
   return (
     <div className="fade-in page-pad" style={{ padding: '22px 28px', maxWidth: 1180 }}>
@@ -63,7 +63,7 @@ export default function DesignDetail() {
         {/* Left col */}
         <div>
           <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', aspectRatio: '1', background: 'var(--bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {imageUrl ? <img src={imageUrl} alt={design.design_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <svg width="64" height="64" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--border-strong)" strokeWidth="1.3"/><circle cx="8.5" cy="8.5" r="1.5" stroke="var(--border-strong)" strokeWidth="1.3"/><path d="M21 15l-5-5L5 21" stroke="var(--border-strong)" strokeWidth="1.3" strokeLinejoin="round"/></svg>}
+            {img ? <img src={img} alt={design.design_name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <svg width="64" height="64" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--border-strong)" strokeWidth="1.3"/><circle cx="8.5" cy="8.5" r="1.5" stroke="var(--border-strong)" strokeWidth="1.3"/><path d="M21 15l-5-5L5 21" stroke="var(--border-strong)" strokeWidth="1.3" strokeLinejoin="round"/></svg>}
           </div>
 
           <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>

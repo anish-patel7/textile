@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import BottomNav from './components/BottomNav';
@@ -23,6 +23,13 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark);
@@ -60,8 +67,8 @@ export default function App() {
 
         {/* Sidebar — hidden on mobile, slide-in when open */}
         <div style={{
-          position: window.innerWidth < 768 ? 'fixed' : 'relative',
-          left: window.innerWidth < 768 ? (sidebarOpen ? 0 : -260) : 0,
+          position: isMobile ? 'fixed' : 'relative',
+          left: isMobile ? (sidebarOpen ? 0 : -260) : 0,
           top: 0, bottom: 0, zIndex: 50,
           transition: 'left .25s ease',
         }}>

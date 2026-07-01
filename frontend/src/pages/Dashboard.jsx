@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../App';
-import { getStats, createBackup } from '../lib/api';
+import { getStats, createBackup, imageUrl } from '../lib/api';
 
 const COLOR_MAP = { Ground: '#8B7355', Black: '#1a1a1a', White: '#f5f0e8', Red: '#c0392b', Blue: '#2980b9', Green: '#27ae60', Yellow: '#f1c40f', Orange: '#e67e22', Purple: '#8e44ad', Grey: '#95a5a6', Brown: '#6d4c41', Pink: '#e91e63' };
 function colorHex(name) { if (!name) return '#ccc'; for (const [k, v] of Object.entries(COLOR_MAP)) { if (name.toLowerCase().includes(k.toLowerCase())) return v; } return '#0e7c6b'; }
@@ -92,8 +92,10 @@ export default function Dashboard() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'none'; }}
               >
-                <div style={{ height: 96, background: d.image_path ? `url(${d.image_path}) center/cover` : 'var(--bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {!d.image_path && <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--border-strong)" strokeWidth="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="var(--border-strong)" strokeWidth="1.5"/><path d="M21 15l-5-5L5 21" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round"/></svg>}
+                <div style={{ height: 96, background: 'var(--bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                  {d.image_path
+                    ? <img src={imageUrl(d.image_path)} alt={d.design_name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--border-strong)" strokeWidth="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="var(--border-strong)" strokeWidth="1.5"/><path d="M21 15l-5-5L5 21" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round"/></svg>}
                 </div>
                 <div style={{ padding: '11px 13px' }}>
                   <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>{d.design_number}</div>

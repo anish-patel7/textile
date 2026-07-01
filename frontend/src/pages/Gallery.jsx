@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useApp } from '../App';
-import { getDesigns } from '../lib/api';
+import { getDesigns, imageUrl } from '../lib/api';
 
 export default function Gallery() {
   const { search, openDetail } = useApp();
   const [designs, setDesigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
+  const debounceRef = useRef(null);
 
   useEffect(() => {
-    setLoading(true);
-    getDesigns(search, 500).then(r => { setDesigns(r.designs || []); setLoading(false); }).catch(() => setLoading(false));
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setLoading(true);
+      getDesigns(search, 200, 0).then(r => { setDesigns(r.designs || []); setLoading(false); }).catch(() => setLoading(false));
+    }, 300);
+    return () => clearTimeout(debounceRef.current);
   }, [search]);
 
   const withImages = designs.filter(d => d.image_path);
@@ -35,7 +40,8 @@ export default function Gallery() {
             onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'scale(1.02)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.transform = 'none'; }}
           >
-            <div style={{ aspectRatio: '1', background: `url(http://localhost:5000${d.image_path}) center/cover`, position: 'relative' }}>
+            <div style={{ aspectRatio: '1', position: 'relative', background: 'var(--bg-inset)', overflow: 'hidden' }}>
+              <img src={imageUrl(d.image_path)} alt={d.design_name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,.65))', padding: '20px 10px 8px' }}>
                 <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, color: '#fff', fontWeight: 600 }}>{d.design_number}</div>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,.8)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.design_name}</div>
@@ -51,7 +57,7 @@ export default function Gallery() {
           onClick={() => setSelected(null)}
         >
           <div style={{ background: 'var(--bg-panel)', borderRadius: 16, overflow: 'hidden', maxWidth: 700, width: '90%', boxShadow: '0 20px 60px rgba(0,0,0,.4)' }} onClick={e => e.stopPropagation()}>
-            <img src={`http://localhost:5000${selected.image_path}`} alt={selected.design_name} style={{ width: '100%', maxHeight: 500, objectFit: 'contain', background: 'var(--bg-inset)' }} />
+            <img src={imageUrl(selected.image_path)} alt={selected.design_name} style={{ width: '100%', maxHeight: 500, objectFit: 'contain', background: 'var(--bg-inset)' }} />
             <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>{selected.design_number}</div>
