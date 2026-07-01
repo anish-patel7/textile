@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
+import BottomNav from './components/BottomNav';
 import Toast from './components/Toast';
 import Dashboard from './pages/Dashboard';
 import Designs from './pages/Designs';
@@ -21,6 +22,7 @@ export default function App() {
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState(null);
   const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark);
@@ -35,21 +37,40 @@ export default function App() {
   function navigate(p, id = null) {
     setPage(p);
     if (id !== undefined) setSelectedId(id);
+    setSidebarOpen(false);
   }
 
-  function openDetail(id) { setSelectedId(id); setPage('detail'); }
-  function openNew() { setEditId(null); setPage('form'); }
-  function openEdit(id) { setEditId(id); setPage('form'); }
+  function openDetail(id) { setSelectedId(id); setPage('detail'); setSidebarOpen(false); }
+  function openNew() { setEditId(null); setPage('form'); setSidebarOpen(false); }
+  function openEdit(id) { setEditId(id); setPage('form'); setSidebarOpen(false); }
 
-  const ctx = { page, navigate, search, setSearch, showToast, dark, setDark, openDetail, openNew, openEdit, editId, selectedId };
+  const ctx = { page, navigate, search, setSearch, showToast, dark, setDark, openDetail, openNew, openEdit, editId, selectedId, sidebarOpen, setSidebarOpen };
 
   return (
     <AppCtx.Provider value={ctx}>
       <div className="flex h-screen overflow-hidden" style={{ background: 'var(--bg-app)', color: 'var(--text)' }}>
-        <Sidebar />
+
+        {/* Mobile overlay */}
+        {sidebarOpen && (
+          <div
+            onClick={() => setSidebarOpen(false)}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.5)', zIndex: 40 }}
+          />
+        )}
+
+        {/* Sidebar — hidden on mobile, slide-in when open */}
+        <div style={{
+          position: window.innerWidth < 768 ? 'fixed' : 'relative',
+          left: window.innerWidth < 768 ? (sidebarOpen ? 0 : -260) : 0,
+          top: 0, bottom: 0, zIndex: 50,
+          transition: 'left .25s ease',
+        }}>
+          <Sidebar />
+        </div>
+
         <div className="flex flex-col flex-1 min-w-0">
           <Topbar />
-          <main className="flex-1 overflow-y-auto overflow-x-hidden">
+          <main className="flex-1 overflow-y-auto overflow-x-hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
             {page === 'dashboard' && <Dashboard />}
             {page === 'designs' && <Designs />}
             {page === 'detail' && <DesignDetail />}
@@ -59,7 +80,10 @@ export default function App() {
             {page === 'backup' && <Backup />}
             {page === 'settings' && <Settings />}
           </main>
+          {/* Bottom nav for mobile */}
+          <BottomNav />
         </div>
+
         {toast && <Toast message={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
       </div>
     </AppCtx.Provider>

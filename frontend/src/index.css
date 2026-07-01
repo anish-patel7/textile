@@ -167,3 +167,50 @@ input::placeholder, textarea::placeholder { color: var(--text-faint); }
 }
 .sidebar-btn:hover { background: var(--sidebar-hover); }
 .sidebar-btn.active { background: var(--primary); color: #fff; }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  /* Show hamburger, hide desktop add button */
+  .mobile-only { display: flex !important; }
+  .desktop-only { display: none !important; }
+
+  /* Hide sidebar search bar on very small */
+  .search-bar { display: none !important; }
+
+  /* Show bottom nav */
+  .mobile-bottom-nav { display: flex !important; }
+
+  /* Add padding so content doesn't hide behind bottom nav */
+  main { padding-bottom: 70px !important; }
+
+  /* Dashboard grid — 2 cols on mobile */
+  .dash-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .dash-grid { grid-template-columns: 1fr !important; }
+  .dash-actions { grid-template-columns: repeat(2, 1fr) !important; }
+  .dash-recent { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Detail page — stack columns */
+  .detail-grid { grid-template-columns: 1fr !important; }
+  .info-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Form — stack columns */
+  .form-grid { grid-template-columns: 1fr !important; }
+
+  /* Page padding */
+  .page-pad { padding: 16px !important; }
+
+  /* Cards full width */
+  .card-mobile { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  /* Single column on very small phones */
+  .dash-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .dash-actions { grid-template-columns: repeat(2, 1fr) !important; }
+  .info-grid { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (min-width: 769px) {
+  .mobile-only { display: none !important; }
+  .mobile-bottom-nav { display: none !important; }
+}

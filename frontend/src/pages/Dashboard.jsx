@@ -50,9 +50,9 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="fade-in" style={{ padding: '26px 28px', maxWidth: 1240 }}>
+    <div className="fade-in page-pad" style={{ padding: '26px 28px', maxWidth: 1240 }}>
       {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginBottom: 24 }}>
+      <div className="dash-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginBottom: 24 }}>
         {statCards.map(s => (
           <div key={s.label} className="card" style={{ padding: 18 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -64,11 +64,11 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 20, alignItems: 'start' }}>
+      <div className="dash-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 20, alignItems: 'start' }}>
         <div>
           {/* Quick Actions */}
           <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-muted)', letterSpacing: '.3px', marginBottom: 12 }}>QUICK ACTIONS</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 28 }}>
+          <div className="dash-actions" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 28 }}>
             {quickActions.map(a => (
               <button key={a.label} onClick={a.onClick} disabled={a.label === 'Backup Database' && backing} style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', padding: 16, background: 'var(--bg-panel)', border: '1px solid var(--border)', borderRadius: 13, cursor: 'pointer', font: 'inherit', color: 'var(--text)', textAlign: 'left', boxShadow: 'var(--shadow)', transition: 'all .15s' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
@@ -85,7 +85,7 @@ export default function Dashboard() {
             <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-muted)', letterSpacing: '.3px' }}>RECENT DESIGNS</div>
             <button onClick={() => navigate('designs')} style={{ border: 'none', background: 'none', color: 'var(--primary)', font: 'inherit', fontWeight: 600, fontSize: 12.5, cursor: 'pointer', padding: 0 }}>View all →</button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+          <div className="dash-recent" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
             {recent.length === 0 && <div style={{ gridColumn: '1/-1', color: 'var(--text-faint)', fontSize: 13, padding: '20px 0' }}>No designs yet. Add your first design!</div>}
             {recent.map(d => (
               <button key={d.id} onClick={() => openDetail(d.id)} style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden', background: 'var(--bg-panel)', border: '1px solid var(--border)', borderRadius: 13, cursor: 'pointer', font: 'inherit', textAlign: 'left', boxShadow: 'var(--shadow)', transition: 'all .15s' }}

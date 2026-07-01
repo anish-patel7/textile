@@ -50,7 +50,7 @@ export default function DesignDetail() {
   const imageUrl = design.image_path ? `http://localhost:5000${design.image_path}` : null;
 
   return (
-    <div className="fade-in" style={{ padding: '22px 28px', maxWidth: 1180 }}>
+    <div className="fade-in page-pad" style={{ padding: '22px 28px', maxWidth: 1180 }}>
       <button onClick={() => navigate('designs')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: 'none', color: 'var(--text-muted)', font: 'inherit', fontSize: 13, fontWeight: 500, cursor: 'pointer', padding: 0, marginBottom: 16 }}
         onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
         onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
@@ -59,7 +59,7 @@ export default function DesignDetail() {
         Back to designs
       </button>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '360px 1fr', gap: 24, alignItems: 'start' }}>
+      <div className="detail-grid" style={{ display: 'grid', gridTemplateColumns: '360px 1fr', gap: 24, alignItems: 'start' }}>
         {/* Left col */}
         <div>
           <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', aspectRatio: '1', background: 'var(--bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -101,7 +101,7 @@ export default function DesignDetail() {
           </div>
 
           <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text-muted)', letterSpacing: '.4px', marginBottom: 10 }}>DESIGN INFORMATION</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'var(--border)', border: '1px solid var(--border)', borderRadius: 13, overflow: 'hidden', marginBottom: 22 }}>
+          <div className="info-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'var(--border)', border: '1px solid var(--border)', borderRadius: 13, overflow: 'hidden', marginBottom: 22 }}>
             {infoPairs.map(([label, value]) => (
               <div key={label} style={{ background: 'var(--bg-panel)', padding: '12px 14px' }}>
                 <div style={{ color: 'var(--text-faint)', fontSize: 10.5, fontWeight: 600, letterSpacing: '.4px', textTransform: 'uppercase' }}>{label}</div>
