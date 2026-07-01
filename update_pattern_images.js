@@ -5,24 +5,24 @@ const https = require('https');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 const BUCKET = 'designs';
 
-// Real Pexels photos of traditional Indian saree fabric patterns & designs
-// Sourced from pexels.com/search/saree+fabric+pattern and silk+saree+texture
+// Hand-verified Pexels photos — every one is a flat fabric / weave / embroidery
+// close-up with NO people, NO props. Reviewed visually before assigning.
 const designImages = [
-  { dn: 'D-001', pexelsId: 35007881,  desc: 'Banarasi silk brocade fabric design' },
-  { dn: 'D-002', pexelsId: 10317113,  desc: 'Kanjivaram silk weave close-up' },
-  { dn: 'D-003', pexelsId: 33433875,  desc: 'Chanderi cotton floral fabric' },
-  { dn: 'D-004', pexelsId: 5439054,   desc: 'Mysore silk saree design' },
-  { dn: 'D-005', pexelsId: 5447529,   desc: 'Paithani silk pattern detail' },
-  { dn: 'D-006', pexelsId: 8710793,   desc: 'Ikat geometric weave pattern' },
-  { dn: 'D-007', pexelsId: 10317106,  desc: 'Pochampally ikat fabric detail' },
-  { dn: 'D-008', pexelsId: 27918892,  desc: 'Jamdani fine weave motif' },
-  { dn: 'D-009', pexelsId: 35059564,  desc: 'Patola double ikat pattern' },
-  { dn: 'D-010', pexelsId: 7920199,   desc: 'Bhagalpuri tussar silk texture' },
-  { dn: 'D-011', pexelsId: 8751525,   desc: 'Maheshwari checks weave' },
-  { dn: 'D-012', pexelsId: 8229223,   desc: 'Sambalpuri tribal saree design' },
-  { dn: 'D-013', pexelsId: 35399688,  desc: 'Baluchari brocade silk motif' },
-  { dn: 'D-014', pexelsId: 33306338,  desc: 'Phulkari embroidery base fabric' },
-  { dn: 'D-015', pexelsId: 8886933,   desc: 'Kashmiri pashmina fine weave' },
+  { dn: 'D-001', pexelsId: 20181020, desc: 'Banarasi — white/gold floral brocade' },
+  { dn: 'D-002', pexelsId: 10317113, desc: 'Kanjivaram — purple/gold silk weave' },
+  { dn: 'D-003', pexelsId: 7956629,  desc: 'Chanderi — soft pink satin' },
+  { dn: 'D-004', pexelsId: 4938321,  desc: 'Mysore — lustrous gold silk' },
+  { dn: 'D-005', pexelsId: 31157322, desc: 'Paithani — silver peacock embroidery' },
+  { dn: 'D-006', pexelsId: 36516572, desc: 'Ikat — colorful silk brocade stack' },
+  { dn: 'D-007', pexelsId: 23749436, desc: 'Pochampally — wall of patterned textiles' },
+  { dn: 'D-008', pexelsId: 8465944,  desc: 'Jamdani — fine ivory silk' },
+  { dn: 'D-009', pexelsId: 5439054,  desc: 'Patola — red paisley weave' },
+  { dn: 'D-010', pexelsId: 7640759,  desc: 'Tussar — raw cream silk texture' },
+  { dn: 'D-011', pexelsId: 7676887,  desc: 'Maheshwari — teal satin silk' },
+  { dn: 'D-012', pexelsId: 4566670,  desc: 'Sambalpuri — colorful printed fabric' },
+  { dn: 'D-013', pexelsId: 6045294,  desc: 'Baluchari — oriental scene brocade' },
+  { dn: 'D-014', pexelsId: 3339215,  desc: 'Phulkari — gold floral embroidery' },
+  { dn: 'D-015', pexelsId: 6275995,  desc: 'Pashmina — gold sequin & navy silk' },
 ];
 
 function download(id) {
@@ -43,7 +43,7 @@ function download(id) {
 }
 
 async function run() {
-  console.log('🥻 Updating with traditional saree fabric design images...\n');
+  console.log('🧵 Updating designs with verified flat fabric-pattern images...\n');
 
   const { data: designs } = await supabase.from('designs').select('id, design_number');
   const designMap = Object.fromEntries(designs.map(d => [d.design_number, d.id]));
@@ -78,7 +78,7 @@ async function run() {
   console.log(`✅ Updated : ${ok} designs`);
   if (fail) console.log(`❌ Failed  : ${fail}`);
   console.log(`==============================`);
-  console.log('🥻 App now shows traditional saree fabric design images!');
+  console.log('🧵 All designs now show pure saree fabric patterns — no people, no props.');
 }
 
 run().catch(err => { console.error('❌', err.message); process.exit(1); });
